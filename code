@@ -1,0 +1,120 @@
+#include <stdio.h>
+
+#define MAX 10
+
+void inputMatrix(int mat[MAX][MAX], int row, int col) {
+    printf("Enter elements of the matrix (%dx%d):\n", row, col);
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            printf("Element (%d,%d): ", i + 1, j + 1);
+            scanf("%d", &mat[i][j]);
+        }
+    }
+}
+
+void printMatrix(int mat[MAX][MAX], int row, int col) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void addMatrices(int mat1[MAX][MAX], int mat2[MAX][MAX], int result[MAX][MAX], int row, int col) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            result[i][j] = mat1[i][j] + mat2[i][j];
+        }
+    }
+}
+
+void subtractMatrices(int mat1[MAX][MAX], int mat2[MAX][MAX], int result[MAX][MAX], int row, int col) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            result[i][j] = mat1[i][j] - mat2[i][j];
+        }
+    }
+}
+
+void multiplyMatrices(int mat1[MAX][MAX], int mat2[MAX][MAX], int result[MAX][MAX], int row1, int col1, int row2, int col2) {
+    for (int i = 0; i < row1; i++) {
+        for (int j = 0; j < col2; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < col1; k++) {
+                result[i][j] += mat1[i][k] * mat2[k][j];
+            }
+        }
+    }
+}
+
+void transposeMatrix(int mat[MAX][MAX], int trans[MAX][MAX], int row, int col) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            trans[j][i] = mat[i][j];
+        }
+    }
+}
+
+int main() {
+    int mat1[MAX][MAX], mat2[MAX][MAX], result[MAX][MAX];
+    int row1, col1, row2, col2;
+    int choice;
+
+    printf("Matrix Calculator\n");
+    printf("1. Addition\n");
+    printf("2. Subtraction\n");
+    printf("3. Multiplication\n");
+    printf("4. Transposition\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            printf("Enter rows and columns for the matrices: ");
+            scanf("%d%d", &row1, &col1);
+            inputMatrix(mat1, row1, col1);
+            inputMatrix(mat2, row1, col1);
+            addMatrices(mat1, mat2, result, row1, col1);
+            printf("Result of Addition:\n");
+            printMatrix(result, row1, col1);
+            break;
+        case 2:
+            printf("Enter rows and columns for the matrices: ");
+            scanf("%d%d", &row1, &col1);
+            inputMatrix(mat1, row1, col1);
+            inputMatrix(mat2, row1, col1);
+            subtractMatrices(mat1, mat2, result, row1, col1);
+            printf("Result of Subtraction:\n");
+            printMatrix(result, row1, col1);
+            break;
+        case 3:
+            printf("Enter rows and columns for the first matrix: ");
+            scanf("%d%d", &row1, &col1);
+            printf("Enter rows and columns for the second matrix: ");
+            scanf("%d%d", &row2, &col2);
+            if (col1 != row2) {
+                printf("Matrix multiplication is not possible with these dimensions.\n");
+                return 1;
+            }
+            inputMatrix(mat1, row1, col1);
+            inputMatrix(mat2, row2, col2);
+            multiplyMatrices(mat1, mat2, result, row1, col1, row2, col2);
+            printf("Result of Multiplication:\n");
+            printMatrix(result, row1, col2);
+            break;
+        case 4:
+            printf("Enter rows and columns for the matrix: ");
+            scanf("%d%d", &row1, &col1);
+            inputMatrix(mat1, row1, col1);
+            transposeMatrix(mat1, result, row1, col1);
+            printf("Result of Transposition:\n");
+            printMatrix(result, col1, row1);
+            break;
+        default:
+            printf("Invalid choice.\n");
+            break;
+    }
+
+    return 0;
+}
